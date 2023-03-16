@@ -1,30 +1,45 @@
-import React  from "react";
+import React, { useState } from "react";
 import Header from "./Header";
-import "../styles.css";
 import Footer from "./Footer";
 import Note from "./Note";
+import CreateArea from "./CreateArea";
+import "../styles.css";
 
 function App() {
+  const [notes, setNotes] = useState([]);
+
+  function addNote(newNote) {
+    setNotes(prevNotes => {
+      return [...prevNotes, newNote];
+    });
+  }
+
+  function deleteNote(id) {
+    setNotes(prevNotes => {
+      return prevNotes.filter((noteItem, index) => {
+        return index !== id;
+      });
+    });
+  }
+
   return (
-    <div className="App">
-      <Header/>
-      <Note/>
-      <Footer/>
+    <div>
+      <Header />
+      <CreateArea onAdd={addNote} />
+      {notes.map((noteItem, index) => {
+        return (
+          <Note
+            key={index}
+            id={index}
+            title={noteItem.title}
+            content={noteItem.content}
+            onDelete={deleteNote}
+          />
+        );
+      })}
+      <Footer />
     </div>
   );
 }
 
 export default App;
-
-//1. Create a new React app. done
-//2. Create a App.jsx component. done
-//3. Create a Header.jsx component that renders a <header> element
-//to show the Keeper App name in an <h1>. done 
-//4. Create a Footer.jsx component that renders a <footer> element
-//to show a copyright message in a <p> with a dynamically updated year.
-//5. Create a Note.jsx component to show a <div> element with a
-//<h1> for a title and a <p> for the content.
-//6. Make sure that the final website is styled like the example shown here:
-//https://l1pp6.csb.app/
-
-//HINT: You will need to study the classes in teh styles.css file to appy styling.
